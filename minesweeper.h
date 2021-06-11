@@ -304,7 +304,12 @@ public:
 
           text.setFillColor(colors[cell]);
 
+#ifdef __MINGW32__
           text.setString(to_string(cell));
+#else
+          text.setString(std::to_string(cell));
+#endif
+
           window.draw(rect);
 
           if (cell == MINE)
