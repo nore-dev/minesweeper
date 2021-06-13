@@ -149,9 +149,8 @@ public:
       int x = rand() % (_cols - 1);
       int y = rand() % (_rows - 1);
       sf::Vector2i pos = randomPlace(x, y, firstIndex);
-      int index = getIndex(pos.x, pos.y);
 
-      _cells[index] = MINE;
+      _cells[getIndex(pos.x, pos.y)] = MINE;
       setNeighbours(pos.x, pos.y);
 
       mines--;
