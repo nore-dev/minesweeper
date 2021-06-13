@@ -124,16 +124,14 @@ public:
     if (!inBounds(x, y))
       return;
 
-    int index = getIndex(x, y);
-
-    if (_cells[index] == MINE)
+    if (getCell(x, y) == MINE)
       return;
 
-    if (_cellStates[index] == INVISIBLE)
+    if (getCellState(x, y) == INVISIBLE)
     {
-      _cellStates[index] = VISIBLE;
+      setCellState(x, y, VISIBLE);
 
-      if (_cells[index] == EMPTY)
+      if (getCell(x, y) == EMPTY)
       {
         floodFill(x - 1, y);
         floodFill(x + 1, y);
