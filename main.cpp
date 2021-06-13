@@ -66,14 +66,11 @@ int main()
           firstTime = false;
         }
 
-        CellState cellState = minesweeper.getCellState(x, y);
-        int cell = minesweeper.getCell(x, y);
-
         if (event.mouseButton.button == Mouse::Left)
-          minesweeper.mouseLeftPressed(x, y, cell, cellState);
+          minesweeper.mouseLeftPressed(x, y);
 
         if (event.mouseButton.button == Mouse::Right)
-          minesweeper.mouseRightPressed(x, y, cell, cellState);
+          minesweeper.mouseRightPressed(x, y);
       }
 
       if (event.type == Event::Resized)

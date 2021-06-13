@@ -205,20 +205,20 @@ public:
     return _cells[getIndex(x, y)];
   }
 
-  void mouseLeftPressed(int x, int y, int cell, CellState cellState)
+  void mouseLeftPressed(int x, int y)
   {
-    if (cellState == INVISIBLE)
+    if (getCellState(x, y) == INVISIBLE)
     {
-      if (cell == EMPTY)
+      if (getCell(x, y) == EMPTY)
         floodFill(x, y);
 
-      if (cell == MINE)
+      if (getCell(x, y) == MINE)
         _gameOver = true;
 
       setCellState(x, y, VISIBLE);
     }
 
-    if (cellState == VISIBLE)
+    if (getCellState(x, y) == VISIBLE && getCell(x, y) != EMPTY)
       revealNeighbours(x, y);
   }
 
@@ -231,12 +231,13 @@ public:
     return gameOver;
   }
 
-  void mouseRightPressed(int x, int y, int cell, CellState cellState)
+  void mouseRightPressed(int x, int y)
   {
+    CellState cellState = getCellState(x, y);
     if (cellState == INVISIBLE && _flaggedCellsCount <= _mineCount)
     {
 
-      if (cell == MINE)
+      if (getCell(x, y) == MINE)
         _foundMines++;
 
       _flaggedCellsCount++;
@@ -245,7 +246,7 @@ public:
 
     if (cellState == FLAGGED)
     {
-      if (cell == MINE)
+      if (getCell(x, y) == MINE)
         _foundMines--;
       _flaggedCellsCount--;
 
@@ -278,8 +279,13 @@ public:
     if (mineCount == cell)
       for (int ny = y - 1; ny <= y + 1; ny++)
         for (int nx = x - 1; nx <= x + 1; nx++)
+        {
+          if (getCell(nx, ny) == EMPTY)
+            floodFill(nx, ny);
+
           if (getCell(nx, ny) != MINE)
             setCellState(nx, ny, VISIBLE);
+        }
   }
 
   void draw(sf::RenderWindow &window)
