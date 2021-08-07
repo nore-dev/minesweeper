@@ -1,4 +1,4 @@
 # Minesweeper :bomb:
-![screenshot](ss.png)
+![screenshot](https://i.imgur.com/he8321r.png)
 
 Made with **SFML**

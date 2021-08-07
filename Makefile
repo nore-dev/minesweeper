@@ -1,7 +1,10 @@
-all: compile link
+CC = g++
+NAME = minesweeper
+
+all: compile run
 
 compile:
-	g++ -I include -c main.cpp -Wall -Wextra -O2
+	$(CC)  main.cpp minesweeper.cpp -I include -L lib -o2 -lsfml-graphics -lsfml-window -lsfml-system -o $(NAME)
 
-link:
-	g++ main.o -o minesweeper -L lib -l sfml-graphics -l sfml-window -l sfml-system
+run:
+	.\$(NAME)

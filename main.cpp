@@ -3,21 +3,24 @@
 #include <iostream>
 #include "minesweeper.h"
 
-#define WIDTH 800
-#define HEIGHT 600
-
 #define CELL_SIZE 40
-#define ROWS 15
-#define COLS 20
-#define MINE_COUNT 20
+#define ROWS 20
+#define COLS 24
+
+#define WIDTH COLS *CELL_SIZE
+#define HEIGHT ROWS *CELL_SIZE
 
 using namespace std;
 using namespace sf;
 
-int main()
+int main(int argc, char **argv)
 {
+  int mineCount = 40;
 
-  RenderWindow window(VideoMode(WIDTH, HEIGHT), "Minesweeper");
+  if (argc > 1)
+    mineCount = std::atoi(argv[1]);
+
+  RenderWindow window(VideoMode(WIDTH, HEIGHT), "Minesweeper", sf::Style::Titlebar | sf::Style::Close);
   Font font;
 
   bool firstTime = true;
@@ -44,7 +47,7 @@ int main()
   gameOverText.setOrigin(textRect.width / 2, textRect.height / 2);
   gameOverText.setPosition(Vector2f(WIDTH / 2.0f, HEIGHT / 2.0f));
 
-  Minesweeper minesweeper(ROWS, COLS, CELL_SIZE, MINE_COUNT, font);
+  Minesweeper minesweeper(ROWS, COLS, CELL_SIZE, mineCount, font);
 
   while (window.isOpen())
   {
@@ -54,8 +57,15 @@ int main()
       if (event.type == Event::Closed)
         window.close();
 
-      if (event.type == Event::MouseButtonPressed && !minesweeper.isGameOver())
+      if (event.type == Event::MouseButtonPressed)
       {
+
+        if (minesweeper.isGameOver())
+        {
+          firstTime = true;
+          minesweeper.reset();
+        }
+
         Vector2i mousePos = Mouse::getPosition(window);
         int x = mousePos.x / CELL_SIZE;
         int y = mousePos.y / CELL_SIZE;
@@ -71,12 +81,6 @@ int main()
 
         if (event.mouseButton.button == Mouse::Right)
           minesweeper.mouseRightPressed(x, y);
-      }
-
-      if (event.type == Event::Resized)
-      {
-        FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-        window.setView(View(visibleArea));
       }
     }
 
